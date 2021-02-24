@@ -15,19 +15,27 @@ typedef struct  s_init
     int n_eat;
 }               t_init;
 
+typedef struct  s_table
+{
+    t_init init;
+    int stop;
+    int *i_fork;
+    pthread_mutex_t *fork;
+    pthread_mutex_t *talk;
+    pthread_mutex_t *next_fork;
+}               t_table;
+
 typedef struct  s_philos
 {
     t_init init;
     int id;
     long last_eat;
-    int *stop;
-    pthread_mutex_t *fork;
-    pthread_mutex_t *talk;
-    pthread_mutex_t *next_fork;
+    struct s_table *table;
 }               t_philos;
 
 void status(int id, char *str, pthread_mutex_t *talk)
 {
+
     struct timeval now;
     gettimeofday(&now, NULL);
     pthread_mutex_lock (talk);
@@ -41,37 +49,46 @@ void *routine(void *p_data)
     struct timeval start;
     philos = p_data;
     gettimeofday(&start, NULL);
+    if(philos->id == philos->init.n_philo)
+        philos->id = -1;
     while (1)
     {
-        usleep(10);
+        usleep(start.tv_usec % 200);
         philos->last_eat = start.tv_usec;
-        if(philos->stop)
+        if (philos->table->stop)
             return NULL;
-        pthread_mutex_lock (philos->next_fork);
-        status(philos->id, "has taken a fork", philos->talk);
-        pthread_mutex_lock (philos->fork);
-        status(philos->id, "has taken a fork", philos->talk);
+        while (!philos->table->i_fork[philos->id] || !philos->table->i_fork[philos->id + 1])
+        {
+        }
+        dprintf(1,"philo :%d, table->i_fork: %d, next_fork: %d",philos->id ,philos->table->i_fork[philos->id], philos->table->i_fork[philos->id + 1]);
+        philos->table->i_fork[philos->id] = 0;
+        pthread_mutex_lock (philos->table->next_fork);
+        status(philos->id, "has taken a fork", philos->table->talk);
+        philos->table->i_fork[philos->id + 1] = 0;
+        pthread_mutex_lock (philos->table->fork);
+        status(philos->id, "has taken a fork", philos->table->talk);
         gettimeofday(&start, NULL);
         if(start.tv_usec  - philos->last_eat  > philos->init.t_die *1000)
         {
-            status(philos->id, "died", philos->talk);
-            *philos->stop = 1;
+            status(philos->id, "died", philos->table->talk);
+            philos->table->stop = 1;
             return NULL;//die
         }
-        if(philos->stop)
+        if(philos->table->stop)
             return NULL;
-        status(philos->id, "is eating", philos->talk);
+        status(philos->id, "is eating", philos->table->talk);
         usleep(philos->init.t_eat * 1000);
-        if(philos->stop)
+        if(philos->table->stop)
             return NULL;
-        pthread_mutex_unlock (philos->fork);
-        pthread_mutex_unlock (philos->next_fork);
-        status(philos->id, "release fork", philos->talk);
-        if(philos->stop)
+        pthread_mutex_unlock (philos->table->fork);
+        philos->table->i_fork[philos->id] = 1;
+        pthread_mutex_unlock (philos->table->next_fork);
+        philos->table->i_fork[philos->id + 1] = 1;
+        if(philos->table->stop)
             return NULL;
-        status(philos->id, "is sleeping", philos->talk);
+        status(philos->id, "is sleeping", philos->table->talk);
         usleep(philos->init.t_sleep * 1000);
-        status(philos->id, "is thinking", philos->talk);
+        status(philos->id, "is thinking", philos->table->talk);
     }
     return NULL;
 }
@@ -90,9 +107,8 @@ int init_philo(t_philos *philos, t_init init, int id)
 {
     philos->init = init;
     philos->id = id;
-    if (!(philos->fork = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t) * 1)))
-        return(0);
-    pthread_mutex_init(philos->fork, NULL);
+    philos->table->i_fork[id] = 1;
+    pthread_mutex_init(philos->table->fork, NULL);
     return (0);
 }
 
@@ -106,7 +122,14 @@ int main(int ac, char **av)
     if(ac < 5 || ac > 6)
         return(1);
     initialyze(&init, av, ac);
-    printf("Before Thread\n");
+    dprintf(1, "qweqweq");
+   
+    if (!(philos[0].table->fork = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t) * init.n_philo)))
+        return(0);
+    dprintf(1, "qweqweq");
+    if (!(philos[.table->i_fork = (int*)malloc(sizeof(int)* init.n_philo)))
+        return(0);
+    dprintf(1, "qweqweq");
     while(i < init.n_philo)
     {
         init_philo(&philos[i], init, i + 1);
@@ -117,24 +140,22 @@ int main(int ac, char **av)
     {
         if (i == 0)
         {
-            philos[i].next_fork = philos[i + 1].fork;
-            if (!(philos[i].stop = (int*)malloc(sizeof(int))))
+            philos[i].table->next_fork = philos[i + 1].table->fork;
+            if (!(philos[i].table->talk = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t) * 1)))
                 return(0);
-            if (!(philos[i].talk = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t) * 1)))
-                return(0);
-            philos[i].stop = 0;
+            philos[i].table->stop = 0;
         }
         else if(i == init.n_philo - 1)
         {
-            philos[i].next_fork = philos[0].fork;
-            philos[i].stop = philos[0].stop;
-            philos[i].talk = philos[0].talk;
+            philos[i].table->next_fork = philos[0].table->fork;
+            philos[i].table->stop = philos[0].table->stop;
+            philos[i].table->talk = philos[0].table->talk;
         }
         else
         {
-            philos[i].next_fork = philos[i + 1].fork;
-            philos[i].stop = philos[0].stop;
-            philos[i].talk = philos[0].talk;
+            philos[i].table->next_fork = philos[i + 1].table->fork;
+            philos[i].table->stop = philos[0].table->stop;
+            philos[i].table->talk = philos[0].table->talk;
         }
         i++;
     }
