@@ -6,21 +6,25 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 10:04:53 by edepauw           #+#    #+#             */
-/*   Updated: 2021/03/03 10:54:58 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/04/21 12:26:19 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-int	init_all(t_init init, t_global *global, t_philos *philos)
+int	init_all(t_init init, t_philos *philos, t_philos *checker)
 {
 	int i;
+	t_global	*global;
 
+	global = malloc(sizeof(t_global));
 	if (init_global(global, init.n_philo))
 		return (1);
 	i = 0;
+	checker->global = global;
 	while (i < init.n_philo)
-	{		init_philo(&philos[i], &init, global, i + 1);
+	{
+		init_philo(&philos[i], init, global, i + 1);
 		i++;
 	}
 	i = -1;

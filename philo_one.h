@@ -29,6 +29,7 @@ typedef struct	s_philos
 {
 	t_init			init;
 	int				id;
+	int				next;
 	int				c_eat;
 	struct timeval	last_eat;
 	int				die;
@@ -39,10 +40,10 @@ typedef struct	s_philos
 
 long	ft_conv_to_ms(struct timeval philo_time, struct timeval start_time);
 void	init_arg(t_init *init, char **av, int ac);
-int init_philo(t_philos *philos, t_init *init, t_global *global, int id);
+int init_philo(t_philos *philos, t_init init, t_global *global, int id);
 void	status(int id, char *str, t_global *global, t_philos *philos);
 int	ft_atoi(const char *str);
 int		init_global(t_global *global, int n_philo);
-int init_all(t_init init, t_global *global, t_philos *philos);
+int init_all(t_init init, t_philos *philos, t_philos *checker);
 
 #endif

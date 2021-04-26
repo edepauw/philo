@@ -6,7 +6,7 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 09:50:30 by edepauw           #+#    #+#             */
-/*   Updated: 2021/03/03 10:56:19 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/04/21 12:02:33 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,15 @@
 
 int		init_global(t_global *global, int n_philo)
 {
-	global = malloc(sizeof(t_global));
-	global->fork = malloc(sizeof(int) * n_philo);
+	int i;
+
+	i = 0;
+	global->fork = malloc(sizeof(int) * (n_philo));
+	while(i < n_philo)
+		global->fork[i++] = 1;
+
+	if (i == 1)
+		global->fork[0] = 0;
 	global->stop = 0;
 	if (!(global->talk = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t))))
 		return (1);
@@ -36,15 +43,14 @@ void	init_arg(t_init *init, char **av, int ac)
 		init->n_eat = ft_atoi(av[5]);
 }
 
-int		init_philo(t_philos *philos, t_init *init, t_global *global, int id)
+int		init_philo(t_philos *philos, t_init init, t_global *global, int id)
 {
-	philos->init = *init;
+	philos->init = init;
 	philos->id = id;
-	dprintf(1,"ici");
-	if (init->n_philo == 1)
-		global->fork[id] = 0;
+	if (id == init.n_philo)
+		philos->next = 0;
 	else
-		global->fork[id] = 1;
+		philos->next = id;
 	philos->global = global;
 	philos->die = 0;
 	if (!(philos->fork = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t))))
@@ -77,10 +83,10 @@ void	status(int id, char *str, t_global *global, t_philos *philos)
 		global->stop = 1;
 		gettimeofday(&now, NULL);
 		printf("%ld %d died\n", ft_conv_to_ms(now, global->start), id);
-		pthread_mutex_unlock(global->talk);
+		//pthread_mutex_unlock(global->talk);
 		return ;
 	}
-	pthread_mutex_lock(global->talk);
+		pthread_mutex_lock(global->talk);
 	gettimeofday(&now, NULL);
 	printf("%ld %d %s\n", ft_conv_to_ms(now, global->start), id, str);
 	pthread_mutex_unlock(global->talk);
