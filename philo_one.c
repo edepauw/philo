@@ -6,7 +6,7 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 09:53:11 by edepauw           #+#    #+#             */
-/*   Updated: 2021/04/26 14:00:23 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/04/27 11:45:08 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,14 @@ void	philo_eat(t_philos *philos)
 		gettimeofday(&now, NULL);
 	}
 	philos->c_eat += 1;
+	if (philos->c_eat == philos->init.n_eat)
+			philos->global->n_finish++;
+	// if (philos->global->n_finish == philos->init.n_philo)
+	// {
+		// philos->global->stop = 1;
+		// dprintf(1,"%d == %d\n", philos->global->n_finish , philos->init.n_philo);
+		// pthread_mutex_lock(philos->global->talk);
+	// }
 	pthread_mutex_unlock(philos->fork);
 	pthread_mutex_unlock(philos->next_fork);
 }
@@ -77,7 +85,15 @@ void	*rt_checker(void *p_data)
 	checker = p_data;
 	while(checker->global->stop == 0)
 	{
-		usleep(5000);
+		//dprintf(1, "%d == %d\n", checker->global->n_finish, checker->init.n_philo);
+		if (checker->global->n_finish == checker->init.n_philo)
+		{
+			checker->global->stop = 1;
+			dprintf(1,"%d == %d\n", checker->global->n_finish , checker->init.n_philo);
+			pthread_mutex_lock(checker->global->talk);
+			return (NULL);
+		}
+		usleep(100);
 	}
 	return (NULL);
 }
@@ -96,7 +112,7 @@ void	*routine(void *p_data)
 		{
 			//dprintf(1, "philo %d fork#%d =%d fork#%d =%d\n",philos->id,philos->id -1, philos->global->fork[philos->id - 1] ,philos->next, philos->global->fork[philos->next]);
 
-			usleep(100);
+			// usleep(100);
 			gettimeofday(&now, NULL);
 			checkdie(now, philos, 0);
 			if (philos->global->stop)
@@ -104,9 +120,13 @@ void	*routine(void *p_data)
 		}
 		philo_eat(philos);
 		philos->global->fork[philos->next] = 1;
-		usleep(100);
+		usleep(500);
 		philos->global->fork[philos->id - 1] = 1;
-		if (philos->global->stop || philos->c_eat == philos->init.n_eat)
+		// while (philos->c_eat == philos->init.n_eat)
+		// {
+		// 	usleep(100);
+		// }
+		if (philos->global->stop /*|| philos->c_eat == philos->init.n_eat*/)
 			break ;
 		philo_sleep(philos);
 		status(philos->id, "is thinking", philos->global, philos);

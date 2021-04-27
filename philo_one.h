@@ -18,6 +18,7 @@ typedef struct	s_init
 typedef struct	s_global
 {
 	int				stop;
+	int				n_finish;
 	struct timeval	start;
 	int				*fork;
 	pthread_mutex_t	*talk;

@@ -6,7 +6,7 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 09:50:30 by edepauw           #+#    #+#             */
-/*   Updated: 2021/04/26 14:15:36 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/04/27 10:28:01 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int		init_global(t_global *global, int n_philo)
 	int i;
 
 	i = 0;
+	global->n_finish = 0;
 	global->fork = malloc(sizeof(int) * (n_philo));
 	while(i < n_philo)
 		global->fork[i++] = 1;

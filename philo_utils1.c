@@ -6,7 +6,7 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 10:04:53 by edepauw           #+#    #+#             */
-/*   Updated: 2021/04/21 12:26:19 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/04/27 10:34:29 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	init_all(t_init init, t_philos *philos, t_philos *checker)
 		return (1);
 	i = 0;
 	checker->global = global;
+	checker->init.n_philo = init.n_philo;
 	while (i < init.n_philo)
 	{
 		init_philo(&philos[i], init, global, i + 1);
