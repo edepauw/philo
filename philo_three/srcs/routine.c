@@ -6,7 +6,7 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 13:44:06 by edepauw           #+#    #+#             */
-/*   Updated: 2021/05/03 11:55:18 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/05/03 11:59:03 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	philo_eat(t_philos *philos)
 	philos->c_eat += 1;
 	dprintf(1, "[%d]n_eat = %d finish = %d\n",philos->id, philos->c_eat,philos->global->n_finish);
 	if (philos->c_eat == philos->init.n_eat)
-		sem_post();
+		sem_post(philos->global->c_eat);
 	philos->global->i_fork++;
 	sem_post(philos->global->forks);
 	usleep(500);
