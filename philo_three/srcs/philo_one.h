@@ -26,6 +26,7 @@ typedef struct	s_global
 	int				i_fork;
 	struct timeval	start;
 	sem_t			*forks;
+	sem_t			*c_eat;
 	sem_t			*talk;
 	sem_t			*die;
 

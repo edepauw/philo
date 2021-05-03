@@ -6,7 +6,7 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 09:50:30 by edepauw           #+#    #+#             */
-/*   Updated: 2021/05/01 18:35:30 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/05/03 11:52:50 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	init_global(t_global *global, int n_philo)
 	sem_unlink("/talk");
 	global->die = sem_open("/die", O_CREAT | O_EXCL, 0644, 0);
 	sem_unlink("/die");
+	global->c_eat = sem_open("/c_eat", O_CREAT | O_EXCL, 0644, 0);
+	sem_unlink("/c_eat");
 	if (global->forks == SEM_FAILED || global->talk == SEM_FAILED
 		|| global->die == SEM_FAILED)
 	{
@@ -89,7 +91,8 @@ void	status(int id, char *str, t_global *global, t_philos *philos)
 	if (philos->die == 1)
 	{
 		sem_wait(global->talk);
-		global->stop = 1;
+		sem_post(global->die);
+		dprintf(1,"dieeeeeeee\n");
 		gettimeofday(&now, NULL);
 		printf("%ld %d died\n", ft_conv_to_ms(now, global->start), id);
 		return ;

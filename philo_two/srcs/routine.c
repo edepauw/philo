@@ -6,7 +6,7 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 13:44:06 by edepauw           #+#    #+#             */
-/*   Updated: 2021/05/01 15:05:22 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/05/03 10:52:45 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ void	*rt_checker(void *p_data)
 	checker = p_data;
 	while (checker->global->stop == 0)
 	{
-		if (checker->global->n_finish == checker->init.n_philo)
+		// dprintf(1, "n_finish = %d\n", checker->global->n_finish);
+		if (checker->global->n_finish == checker->init.n_philo - 1)
 		{
 			checker->global->stop = 1;
 			sem_wait(checker->global->talk);
