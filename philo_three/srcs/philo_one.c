@@ -6,7 +6,7 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 09:53:11 by edepauw           #+#    #+#             */
-/*   Updated: 2021/05/01 19:17:31 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/05/03 13:31:43 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ft_philo(int ac, char **av)
 {
 	t_init		init;
 	pthread_t	*philo;
-	pthread_t	check[1];
+	pthread_t	check[2];
 	t_philos	*philos;
 	t_philos	checker[1];
 

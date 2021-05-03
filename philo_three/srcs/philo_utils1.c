@@ -6,7 +6,7 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 10:04:53 by edepauw           #+#    #+#             */
-/*   Updated: 2021/05/03 11:52:18 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/05/03 13:31:49 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	ft_fork(t_philos *ps, t_philos *cr, pthread_t *c)
 	if (pid != 0)
 	{
 		pthread_create(&c[0], NULL, rt_checker, (void *)&cr[0]);
+		pthread_create(&c[1], NULL, check_eat, (void *)&cr[0]);
 		pthread_join(c[0], NULL);
 	}
 }

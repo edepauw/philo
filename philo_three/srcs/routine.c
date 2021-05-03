@@ -6,7 +6,7 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 13:44:06 by edepauw           #+#    #+#             */
-/*   Updated: 2021/05/03 11:59:03 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/05/03 13:36:56 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,12 @@ void	philo_eat(t_philos *philos)
 	gettimeofday(&start, NULL);
 	wait_eat(philos, start);
 	philos->c_eat += 1;
-	dprintf(1, "[%d]n_eat = %d finish = %d\n",philos->id, philos->c_eat,philos->global->n_finish);
+	dprintf(1, "[%d] %d == %d\n",philos->id, philos->c_eat, philos->init.n_eat);
 	if (philos->c_eat == philos->init.n_eat)
+	{
+	dprintf(1, "philos[%d] good\n", philos->id);
 		sem_post(philos->global->c_eat);
+	}
 	philos->global->i_fork++;
 	sem_post(philos->global->forks);
 	usleep(500);
@@ -98,6 +101,7 @@ void	*check_eat(void *p_data)
 		sem_wait(checker->global->c_eat);
 		i++;
 	}
+	sem_post(checker->global->die);
 	return (NULL);
 }
 

@@ -47,6 +47,7 @@ long	ft_conv_to_ms(struct timeval philo_time, struct timeval start_time);
 int		init_arg(t_init *init, char **av, int ac);
 void	*routine(t_philos *ps);
 void	*rt_checker(void *p_data);
+void	*check_eat(void *p_data);
 void	philo_eat(t_philos *philos);
 void	checkdie(struct timeval now, t_philos *philos, int eat);
 void	philo_sleep(t_philos *philos);
