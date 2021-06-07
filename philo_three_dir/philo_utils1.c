@@ -12,6 +12,24 @@
 
 #include "philo_one.h"
 
+void	checkdie(struct timeval now, t_philos *philos, int eat)
+{
+	if (ft_conv_to_ms(now, philos->last_eat) >= philos->init.t_die)
+	{
+		philos->die = 1;
+		status(philos->id, "died", philos->global, philos);
+		if (eat)
+		{
+			philos->global->i_fork++;
+			sem_post(philos->global->forks);
+			usleep(500);
+			philos->global->i_fork++;
+			sem_post(philos->global->forks);
+		}
+		return ;
+	}
+}
+
 int	check_arg(int ac, char **av)
 {
 	int	i;
@@ -55,25 +73,19 @@ int	init_all(t_init init, t_philos *philos, t_philos *checker)
 
 void	ft_fork(t_philos *ps, t_philos *cr, pthread_t *c)
 {
-	int	i;
-	pid_t *p;
-	pid_t pid;
+	int		i;
+	pid_t	*p;
+	pid_t	pid;
 
 	i = -1;
-
 	p = (pid_t *)malloc(sizeof(pid_t) * ps->init.n_philo);
 	while (++i < ps->init.n_philo && pid != 0)
 	{
 		pid = fork();
 		if (pid == 0)
-		{
 			routine(&ps[i]);
-		}
-		else {
+		else
 			p[i] = pid;
-		}
-		// pthread_create(&p[i], NULL, routine, (void *)&ps[i]);
-		// usleep(100);
 	}
 	if (pid != 0)
 	{
@@ -82,9 +94,7 @@ void	ft_fork(t_philos *ps, t_philos *cr, pthread_t *c)
 		pthread_join(c[0], NULL);
 		i = -1;
 		while (++i < ps->init.n_philo)
-		{
-			kill(p[i] , 15);
-		}
+			kill(p[i], 15);
 	}
 	free(p);
 }

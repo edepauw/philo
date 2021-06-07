@@ -93,7 +93,6 @@ void	*rt_checker(void *p_data)
 	checker = p_data;
 	while (checker->global->stop == 0)
 	{
-		// dprintf(1, "n_finish = %d\n", checker->global->n_finish);
 		if (checker->global->n_finish == checker->init.n_philo - 1)
 		{
 			checker->global->stop = 1;

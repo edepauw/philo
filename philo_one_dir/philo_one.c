@@ -53,7 +53,7 @@ void	*routine(void *p_data)
 
 int	ft_free(t_philos *philos, pthread_t *philo)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < philos[0].init.n_philo)
