@@ -47,6 +47,17 @@ void	*routine(void *p_data)
 	return (NULL);
 }
 
+int	ft_free(t_philos *philos, pthread_t *philo)
+{
+	if (philos[0].global)
+		free(philos[0].global);
+	if (philos != NULL)
+		free(philos);
+	if (philo != NULL)
+		free(philo);
+	return (0);
+}
+
 int	ft_philo(int ac, char **av)
 {
 	t_init		init;
@@ -62,6 +73,7 @@ int	ft_philo(int ac, char **av)
 	if (init_all(init, philos, checker))
 		return (1);
 	ft_thread(philos, philo, checker, check);
+	ft_free(philos, philo);
 	return (0);
 }
 

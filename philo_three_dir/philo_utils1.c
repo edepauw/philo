@@ -86,6 +86,7 @@ void	ft_fork(t_philos *ps, t_philos *cr, pthread_t *c)
 			kill(p[i] , 15);
 		}
 	}
+	free(p);
 }
 
 int	ft_atoi(const char *str)
