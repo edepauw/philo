@@ -6,7 +6,7 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 13:44:06 by edepauw           #+#    #+#             */
-/*   Updated: 2021/04/28 14:36:45 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/06/09 13:01:15 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	philo_eat(t_philos *philos)
 	if (philos->c_eat == philos->init.n_eat)
 		philos->global->n_finish++;
 	pthread_mutex_unlock(philos->fork);
+	usleep(50);
 	pthread_mutex_unlock(philos->next_fork);
 }
 

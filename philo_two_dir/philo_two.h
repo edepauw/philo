@@ -1,21 +1,13 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/08 10:58:45 by edepauw           #+#    #+#             */
-/*   Updated: 2021/06/08 11:00:26 by edepauw          ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef PHILO_TWO_H
+# define PHILO_TWO_H
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <pthread.h>
+# include <semaphore.h>
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <semaphore.h>
 # include <sys/time.h>
 
 typedef struct s_init
@@ -31,10 +23,11 @@ typedef struct s_global
 {
 	int				stop;
 	int				n_finish;
+	int				i_fork;
 	struct timeval	start;
-	int				*fork;
-	pthread_mutex_t	*talk;
-	pthread_mutex_t	*die;
+	sem_t			*forks;
+	sem_t			*talk;
+	sem_t			*die;
 
 }				t_global;
 
@@ -47,8 +40,6 @@ typedef struct s_philos
 	struct timeval	last_eat;
 	int				die;
 	t_global		*global;
-	pthread_mutex_t	*fork;
-	pthread_mutex_t	*next_fork;
 }				t_philos;
 
 long	ft_conv_to_ms(struct timeval philo_time, struct timeval start_time);

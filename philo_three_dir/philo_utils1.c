@@ -6,11 +6,11 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 10:04:53 by edepauw           #+#    #+#             */
-/*   Updated: 2021/05/04 13:59:09 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/06/08 11:11:22 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_three.h"
 
 void	checkdie(struct timeval now, t_philos *philos, int eat)
 {

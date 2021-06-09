@@ -6,7 +6,7 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 10:04:53 by edepauw           #+#    #+#             */
-/*   Updated: 2021/04/28 14:36:47 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/06/09 13:02:36 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	ft_thread(t_philos *ps, pthread_t *p, t_philos *cr, pthread_t *c)
 	while (++i < ps->init.n_philo)
 	{
 		pthread_create(&p[i], NULL, routine, (void *)&ps[i]);
-		usleep(100);
+		usleep(150);
 	}
 	pthread_create(&c[0], NULL, rt_checker, (void *)&cr[0]);
 	pthread_join(c[0], NULL);

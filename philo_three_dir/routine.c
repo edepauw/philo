@@ -6,11 +6,11 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 13:44:06 by edepauw           #+#    #+#             */
-/*   Updated: 2021/05/04 15:02:37 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/06/08 11:11:22 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_three.h"
 
 void	wait_eat(t_philos *philos, struct timeval start)
 {

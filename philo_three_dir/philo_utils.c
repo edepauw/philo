@@ -6,11 +6,11 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 09:50:30 by edepauw           #+#    #+#             */
-/*   Updated: 2021/05/04 13:59:08 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/06/08 11:11:22 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_three.h"
 
 int	init_global(t_global *global, int n_philo)
 {

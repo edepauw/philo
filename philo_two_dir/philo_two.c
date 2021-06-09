@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.c                                        :+:      :+:    :+:   */
+/*   philo_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 09:53:11 by edepauw           #+#    #+#             */
-/*   Updated: 2021/06/09 13:11:23 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/06/08 11:11:39 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int	wait_fork(t_philos	*philos)
 {
 	struct timeval	now;
 
-	while (!philos->global->fork[philos->id - 1]
-		|| !philos->global->fork[philos->next])
+	while (philos->global->i_fork < 2)
 	{
 		gettimeofday(&now, NULL);
 		checkdie(now, philos, 0);
@@ -40,11 +39,8 @@ void	*routine(void *p_data)
 		if (wait_fork(philos))
 			return (NULL);
 		philo_eat(philos);
-		philos->global->fork[philos->next] = 1;
-		usleep(50);
-		philos->global->fork[philos->id - 1] = 1;
-		// if (philos->global->stop)
-		//  	break ;
+		if (philos->global->stop)
+			break ;
 		philo_sleep(philos);
 		status(philos->id, "is thinking", philos->global, philos);
 	}
@@ -53,17 +49,6 @@ void	*routine(void *p_data)
 
 int	ft_free(t_philos *philos, pthread_t *philo)
 {
-	int	i;
-
-	i = -1;
-	while (++i < philos[0].init.n_philo)
-		free(philos[i].fork);
-	if (philos[0].global->die != NULL)
-		free(philos[0].global->die);
-	if (philos[0].global->talk != NULL)
-		free(philos[0].global->talk);
-	if (philos[0].global->fork != NULL)
-		free(philos[0].global->fork);
 	if (philos[0].global)
 		free(philos[0].global);
 	if (philos != NULL)

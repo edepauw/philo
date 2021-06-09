@@ -6,11 +6,11 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 10:04:53 by edepauw           #+#    #+#             */
-/*   Updated: 2021/04/29 09:01:02 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/06/08 11:11:56 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int	check_arg(int ac, char **av)
 {

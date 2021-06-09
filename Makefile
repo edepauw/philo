@@ -6,7 +6,7 @@
 #    By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/03 10:20:09 by edepauw           #+#    #+#              #
-#    Updated: 2021/05/04 11:42:25 by edepauw          ###   ########lyon.fr    #
+#    Updated: 2021/06/08 11:09:44 by edepauw          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ NAME3	= philo_three
 CFLAGS 	= -Wall -Wextra -Werror
 
 SRC1 	= philo_one.c philo_utils.c philo_utils1.c routine.c
+SRC2 	= philo_two.c philo_utils.c philo_utils1.c routine.c
+SRC3 	= philo_three.c philo_utils.c philo_utils1.c routine.c
 
 .PHONY: all clean fclean re
 
@@ -30,8 +32,8 @@ OBJSFD3 	= philo_three_dir
 
 
 OBJS1 	= $(addprefix $(OBJSFD1)/,$(SRC1:.c=.o))
-OBJS2 	= $(addprefix $(OBJSFD2)/,$(SRC1:.c=.o))
-OBJS3 	= $(addprefix $(OBJSFD3)/,$(SRC1:.c=.o))
+OBJS2 	= $(addprefix $(OBJSFD2)/,$(SRC2:.c=.o))
+OBJS3 	= $(addprefix $(OBJSFD3)/,$(SRC3:.c=.o))
 
 LIBFT_HDR 	= -I./libft
 LIB_BINARY	= -L./libft -lft
@@ -40,7 +42,7 @@ LIBFT		= libft/libft.a
 $(LIBFT):
 	@make -C libft re
 
-all: $(LIBFT) $(NAME1) $(NAME2)
+all: $(LIBFT) $(NAME1) $(NAME2) $(NAME3)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) $(HDR) $(LIBFT_HDR) -c $< -o $@

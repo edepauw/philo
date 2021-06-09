@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.c                                        :+:      :+:    :+:   */
+/*   philo_three.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 09:53:11 by edepauw           #+#    #+#             */
-/*   Updated: 2021/06/09 13:11:23 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/06/08 11:11:22 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_three.h"
 
 int	wait_fork(t_philos	*philos)
 {
 	struct timeval	now;
 
-	while (!philos->global->fork[philos->id - 1]
-		|| !philos->global->fork[philos->next])
+	while (philos->global->i_fork < 2)
 	{
 		gettimeofday(&now, NULL);
 		checkdie(now, philos, 0);
@@ -27,43 +26,28 @@ int	wait_fork(t_philos	*philos)
 	return (0);
 }
 
-void	*routine(void *p_data)
+void	*routine(t_philos *philos)
 {
-	t_philos		*philos;
 	struct timeval	start;
 
-	philos = p_data;
 	gettimeofday(&start, NULL);
 	philos->last_eat = start;
 	while (1)
 	{
 		if (wait_fork(philos))
-			return (NULL);
+			exit(0);
 		philo_eat(philos);
-		philos->global->fork[philos->next] = 1;
-		usleep(50);
-		philos->global->fork[philos->id - 1] = 1;
-		// if (philos->global->stop)
-		//  	break ;
+		if (philos->global->stop)
+			break ;
 		philo_sleep(philos);
 		status(philos->id, "is thinking", philos->global, philos);
 	}
+	exit(0);
 	return (NULL);
 }
 
 int	ft_free(t_philos *philos, pthread_t *philo)
 {
-	int	i;
-
-	i = -1;
-	while (++i < philos[0].init.n_philo)
-		free(philos[i].fork);
-	if (philos[0].global->die != NULL)
-		free(philos[0].global->die);
-	if (philos[0].global->talk != NULL)
-		free(philos[0].global->talk);
-	if (philos[0].global->fork != NULL)
-		free(philos[0].global->fork);
 	if (philos[0].global)
 		free(philos[0].global);
 	if (philos != NULL)
@@ -77,7 +61,7 @@ int	ft_philo(int ac, char **av)
 {
 	t_init		init;
 	pthread_t	*philo;
-	pthread_t	check[1];
+	pthread_t	check[2];
 	t_philos	*philos;
 	t_philos	checker[1];
 
@@ -87,7 +71,7 @@ int	ft_philo(int ac, char **av)
 		return (1);
 	if (init_all(init, philos, checker))
 		return (1);
-	ft_thread(philos, philo, checker, check);
+	ft_fork(philos, checker, check);
 	ft_free(philos, philo);
 	return (0);
 }

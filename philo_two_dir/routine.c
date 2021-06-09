@@ -6,11 +6,11 @@
 /*   By: edepauw <edepauw@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 13:44:06 by edepauw           #+#    #+#             */
-/*   Updated: 2021/05/03 10:52:45 by edepauw          ###   ########lyon.fr   */
+/*   Updated: 2021/06/08 11:11:56 by edepauw          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 void	checkdie(struct timeval now, t_philos *philos, int eat)
 {
@@ -93,7 +93,7 @@ void	*rt_checker(void *p_data)
 	checker = p_data;
 	while (checker->global->stop == 0)
 	{
-		if (checker->global->n_finish == checker->init.n_philo - 1)
+		if (checker->global->n_finish == checker->init.n_philo)
 		{
 			checker->global->stop = 1;
 			sem_wait(checker->global->talk);
